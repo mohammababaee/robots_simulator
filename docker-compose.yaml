@@ -1,0 +1,8 @@
+services:
+  simulator:
+    build: ./hub_image/
+    container_name: hub_simulator
+    volumes:
+      - ./app:/src
+    command: sh -c './run_mqtt_publisher.sh'
+
