@@ -4,16 +4,14 @@ import sqlite3
 
 app = FastAPI()
 
-
 # Function to fetch sensor data from SQLite
 def fetch_sensor_data():
-    conn = sqlite3.connect("sensor_data.db")
+    conn = sqlite3.connect("/src/sensor_data.db")
     c = conn.cursor()
     c.execute("SELECT * FROM sensor_data ORDER BY timestamp DESC")
     data = c.fetchall()
     conn.close()
     return data
-
 
 # Route to fetch sensor data
 @app.get("/api/sensor-data", response_model=List[dict])
@@ -31,9 +29,8 @@ async def get_sensor_data():
         )
     return sensor_data
 
-
-# Start the FastAPI application
+# This block allows the script to be run directly with Uvicorn
 if __name__ == "__main__":
     import uvicorn
 
-    uvicorn.run(app, host="localhost", port=8000)
+    uvicorn.run(app, host="0.0.0.0", port=8000)

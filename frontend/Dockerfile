@@ -1,7 +1,7 @@
 
 FROM node:14.17.1-alpine
 
-WORKDIR /app
+WORKDIR /frontend/src
 
 
 COPY package*.json ./

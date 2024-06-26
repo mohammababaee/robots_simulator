@@ -5,6 +5,8 @@ WORKDIR /src
 
 # install dependencies
 RUN pip install --upgrade pip 
+
+
 COPY requirements.txt requirements.txt
 
 # Install Python dependencies

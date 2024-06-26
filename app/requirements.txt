@@ -1,3 +1,4 @@
-fastapi==0.73.0
-sqlite3
-uvicorn==0.15.0
+paho-mqtt
+uvicorn
+fastapi
+# Add other dependencies here

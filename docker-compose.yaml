@@ -2,11 +2,15 @@ version: '3.8'
 
 services:
   simulator:
-    build: ./hub_image/
+    build:
+      context: ./hub_image/
+      dockerfile: Dockerfile
     container_name: hub_simulator
     volumes:
-      - ./app:/src
-    command: sh -c './run_mqtt_publisher.sh'
+      - ./hub_image:/src
+    entrypoint: /bin/sh -c
+    command: |
+      chmod +x /src/run_mqtt_publisher.sh && /src/run_mqtt_publisher.sh
     depends_on:
       - mosquitto
 
@@ -17,23 +21,14 @@ services:
       - "1883:1883"
 
   backend:
-    build: ./app/
+    build:
+      context: ./app/
+      dockerfile: Dockerfile
     container_name: server_api
     ports:
       - "8000:8000"
     depends_on:
       - mosquitto
       - simulator
-    command: >
-      sh -c 'python /src/mqtt_subscriber.py & uvicorn main:app --host 0.0.0.0 --port 8000 --reload'
     environment:
       - PYTHONPATH=/src
-  frontend:
-    build: ./frontend
-    container_name: react_frontend
-    ports:
-      - "3000:3000"
-    depends_on:
-      - backend
-    stdin_open: true
-    tty: true
